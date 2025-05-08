@@ -22,10 +22,29 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const extendedLoginSchema = loginSchema.extend({
   rememberMe: z.boolean().optional(),
+  username: z.string()
+    .min(3, "Username must be at least 3 characters long")
+    .max(20, "Username must not exceed 20 characters")
+    .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
+  password: z.string()
+    .min(6, "Password must be at least 6 characters long")
+    .max(50, "Password must not exceed 50 characters"),
 });
 
 const extendedRegisterSchema = insertUserSchema.extend({
-  confirmPassword: z.string().min(1, "Please confirm your password"),
+  username: z.string()
+    .min(3, "Username must be at least 3 characters long")
+    .max(20, "Username must not exceed 20 characters")
+    .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
+  password: z.string()
+    .min(6, "Password must be at least 6 characters long")
+    .max(50, "Password must not exceed 50 characters"),
+  confirmPassword: z.string()
+    .min(6, "Please confirm your password")
+    .max(50, "Password must not exceed 50 characters"),
+  fullName: z.string()
+    .min(1, "Full Name is required")
+    .max(50, "Full Name must not exceed 50 characters"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -73,8 +92,15 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md space-y-8 p-8">
+    <div
+      className="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8"
+      style={{
+        backgroundImage: "url('https://sdmntpreastus2.oaiusercontent.com/files/00000000-a914-61f6-a471-77e5ee29c5c4/raw?se=2025-04-20T15%3A02%3A49Z&sp=r&sv=2024-08-04&sr=b&scid=3467c5d5-1200-57ff-b030-7a1aac46a1df&skoid=2f36945c-3adc-4614-ac2b-eced8f672c58&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-19T18%3A30%3A57Z&ske=2025-04-20T18%3A30%3A57Z&sks=b&skv=2024-08-04&sig=Px3kOoG9l23guwT0n4q70R35GWzkpVRirrrj%2B662Tvg%3D')", // Replace with the actual image URL
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <Card className="w-full max-w-md space-y-8 p-8 bg-white bg-opacity-90">
         <div>
           <h2 className="text-center text-3xl font-bold text-neutral-900">
             Spendyzer
